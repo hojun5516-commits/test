@@ -1,25 +1,244 @@
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>나의 첫 홈페이지</title>
-<style>
-body { margin:0; font-family:Arial,sans-serif; text-align:center; }
-header { background:#173b75; color:white; padding:40px 15px; }
-main { padding:80px 20px; }
-h2 { color:#173b75; }
-button { background:#2563eb; color:white; border:0; padding:15px 30px; border-radius:8px; cursor:pointer; }
-footer { background:#f1f5f9; padding:20px; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>나의 생활 관리 대시보드</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Malgun Gothic", sans-serif;
+      background: #f4f7fb;
+      color: #1e293b;
+    }
+
+    header {
+      background: #17365d;
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    header h1 { margin: 0 0 10px; }
+
+    main {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 16px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 14px 24px;
+      border: 0;
+      border-radius: 8px;
+      background: #dbe4ef;
+      color: #17365d;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button.active {
+      background: #2563eb;
+      color: white;
+    }
+
+    .panel {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px #00000012;
+    }
+
+    .table-area {
+      overflow-x: auto;
+      margin-top: 15px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #dce3ec;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th { background: #eaf1fa; }
+
+    .status { color: #64748b; }
+
+    footer {
+      text-align: center;
+      color: #64748b;
+      padding: 30px;
+    }
+  </style>
 </head>
+
 <body>
-<header><h1>나의 첫 홈페이지</h1></header>
-<main>
-<h2>환영합니다!</h2>
-<p>GitHub와 AI로 만든 나만의 웹사이트입니다.</p>
-<button onclick="alert('홈페이지 제작 성공!')">클릭해 보세요</button>
-</main>
-<footer>2026 My Homepage</footer>
+  <header>
+    <h1>나의 생활 관리 대시보드</h1>
+    <p>구글 스프레드시트 연동 홈페이지</p>
+  </header>
+
+  <main>
+    <div class="buttons">
+      <button id="carBtn" class="active"
+              onclick="showSheet('car')">
+        자동차 관리
+      </button>
+
+      <button id="homeBtn"
+              onclick="showSheet('home')">
+        가전 관리
+      </button>
+    </div>
+
+    <section class="panel">
+      <h2 id="sheetTitle">자동차 관리</h2>
+      <p class="status" id="status">데이터를 불러오는 중...</p>
+      <div class="table-area" id="tableArea"></div>
+    </section>
+  </main>
+
+  <footer>2026 My Dashboard</footer>
+
+  <script>
+    const spreadsheetId =
+      "1851_FKFXugeFmZgGhnfvsj3kkqXHBPvv6UHT8rVczQI";
+
+    const sheets = {
+      car: {
+        title: "자동차 관리",
+        gid: "1993711592"
+      },
+      home: {
+        title: "가전 관리",
+        gid: "81047042"
+      }
+    };
+
+    let requestNumber = 0;
+
+    function showSheet(type) {
+      const sheet = sheets[type];
+      const currentRequest = ++requestNumber;
+
+      document.getElementById("sheetTitle").textContent =
+        sheet.title;
+
+      document.getElementById("carBtn").classList.toggle(
+        "active", type === "car"
+      );
+
+      document.getElementById("homeBtn").classList.toggle(
+        "active", type === "home"
+      );
+
+      const area = document.getElementById("tableArea");
+      const status = document.getElementById("status");
+
+      area.replaceChildren();
+      status.textContent = "데이터를 불러오는 중...";
+
+      const url =
+        "https://docs.google.com/spreadsheets/d/" +
+        spreadsheetId +
+        "/gviz/tq?gid=" + sheet.gid +
+        "&tqx=out:json" +
+        "&tq=" + encodeURIComponent("select *") +
+        "&cache=" + Date.now();
+
+      fetch(url)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+          }
+          return response.text();
+        })
+        .then(text => {
+          if (currentRequest !== requestNumber) return;
+
+          const start = text.indexOf("{");
+          const end = text.lastIndexOf("}");
+
+          if (start === -1 || end === -1) {
+            throw new Error("응답 형식 오류");
+          }
+
+          const data = JSON.parse(
+            text.substring(start, end + 1)
+          );
+
+          if (data.status === "error") {
+            throw new Error("시트 조회 오류");
+          }
+
+          renderTable(data.table);
+          status.textContent = "데이터 조회 완료";
+        })
+        .catch(error => {
+          if (currentRequest !== requestNumber) return;
+          console.error(error);
+          status.textContent =
+            "데이터를 불러오지 못했습니다. " +
+            "시트 공유 설정과 브라우저 접근을 확인하세요.";
+        });
+    }
+
+    function renderTable(data) {
+      const area = document.getElementById("tableArea");
+      const table = document.createElement("table");
+      const thead = document.createElement("thead");
+      const tbody = document.createElement("tbody");
+      const headerRow = document.createElement("tr");
+
+      data.cols.forEach((col, index) => {
+        const th = document.createElement("th");
+        th.textContent = col.label || col.id ||
+          "항목 " + (index + 1);
+        headerRow.appendChild(th);
+      });
+
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+
+      (data.rows || []).forEach(row => {
+        const tr = document.createElement("tr");
+
+        data.cols.forEach((col, index) => {
+          const td = document.createElement("td");
+          const cell = row.c ? row.c[index] : null;
+
+          td.textContent = cell
+            ? String(cell.f ?? cell.v ?? "")
+            : "";
+
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(tbody);
+      area.appendChild(table);
+    }
+
+    showSheet("car");
+  </script>
 </body>
 </html>

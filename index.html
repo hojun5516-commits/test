@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MY LIFE | 생활 관리 대시보드</title>
+
 <style>
 :root {
   --navy:#15263e;
@@ -14,82 +15,146 @@
   --muted:#64748b;
   --line:#e2e8f0;
 }
-* { box-sizing:border-box; }
+
+* {
+  box-sizing:border-box;
+}
+
 body {
   margin:0;
   font-family:Arial,"Malgun Gothic",sans-serif;
   color:var(--text);
   background:var(--bg);
 }
+
+/* 상단 제목 + 통계 카드 전체 고정 */
+.sticky-top {
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:var(--bg);
+  box-shadow:0 5px 18px #172b4512;
+}
+
 header {
   background:linear-gradient(120deg,#15263e,#254a77);
   color:white;
-  padding:30px 20px 42px;
+  padding:24px 20px 38px;
 }
-.wrap { max-width:1100px; margin:auto; }
+
+.wrap {
+  max-width:1100px;
+  margin:auto;
+}
+
 .brand {
   font-size:13px;
   letter-spacing:2px;
   color:#bfdbfe;
   font-weight:bold;
 }
-header h1 { margin:20px 0 8px; font-size:30px; }
-header p { color:#cbd5e1; margin:0; }
-main {
+
+header h1 {
+  margin:18px 0 8px;
+  font-size:30px;
+}
+
+header p {
+  color:#cbd5e1;
+  margin:0;
+}
+
+/* 통계 카드 */
+.stats-wrap {
   max-width:1100px;
-  margin:-20px auto 40px;
-  padding:0 16px;
+  margin:-20px auto 0;
+  padding:0 16px 12px;
   position:relative;
 }
+
 .stats {
   display:grid;
-  grid-template-columns:repeat(3,1fr);
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:12px;
-  margin-bottom:20px;
 }
+
 .card {
   background:white;
   border-radius:15px;
   padding:22px;
   box-shadow:0 5px 20px #172b4510;
 }
-.stat-label { color:var(--muted); font-size:13px; }
+
+.stat-label {
+  color:var(--muted);
+  font-size:13px;
+}
+
 .stat-number {
   font-size:30px;
   font-weight:bold;
   margin-top:8px;
 }
-.section-title { margin:0 0 16px; font-size:20px; }
+
+/* 본문 */
+main {
+  max-width:1100px;
+  margin:20px auto 40px;
+  padding:0 16px;
+}
+
+.section-title {
+  margin:0 0 16px;
+  font-size:20px;
+}
+
 .todo-form {
   display:grid;
   grid-template-columns:1fr 160px auto;
   gap:10px;
   margin-bottom:20px;
 }
-input, button {
+
+input,button {
   font:inherit;
   border-radius:9px;
 }
+
 input {
   border:1px solid var(--line);
   padding:12px;
   min-width:0;
 }
+
 button {
   border:0;
   padding:12px 17px;
   cursor:pointer;
   font-weight:bold;
 }
-.primary { background:var(--blue); color:white; }
+
+.primary {
+  background:var(--blue);
+  color:white;
+}
+
 .tabs {
   display:flex;
   flex-wrap:wrap;
   gap:8px;
   margin:14px 0;
 }
-.tab { background:#e9eef6; color:#334155; }
-.tab.active { background:var(--navy); color:white; }
+
+.tab {
+  background:#e9eef6;
+  color:#334155;
+}
+
+.tab.active {
+  background:var(--navy);
+  color:white;
+}
+
 .task {
   display:flex;
   align-items:center;
@@ -97,105 +162,211 @@ button {
   border-bottom:1px solid var(--line);
   padding:14px 0;
 }
-.task:last-child { border-bottom:0; }
+
+.task:last-child {
+  border-bottom:0;
+}
+
 .task input[type="checkbox"] {
   width:18px;
   height:18px;
   accent-color:var(--blue);
 }
-.task-content { flex:1; min-width:0; }
-.task-name { font-weight:bold; overflow-wrap:anywhere; }
-.task-name.done { text-decoration:line-through; color:#94a3b8; }
-.task-date { font-size:12px; color:var(--muted); margin-top:5px; }
-.delete { background:#fee2e2; color:#b91c1c; }
-.empty { color:var(--muted); padding:20px 0; }
-.spacer { height:20px; }
-.sheet-buttons { display:flex; gap:10px; flex-wrap:wrap; }
-.sheet-buttons button { background:#e9eef6; color:#334155; }
-.sheet-buttons button.active { background:var(--blue); color:white; }
-.table-area { overflow-x:auto; margin-top:15px; }
-table { width:100%; border-collapse:collapse; font-size:14px; }
+
+.task-content {
+  flex:1;
+  min-width:0;
+}
+
+.task-name {
+  font-weight:bold;
+  overflow-wrap:anywhere;
+}
+
+.task-name.done {
+  text-decoration:line-through;
+  color:#94a3b8;
+}
+
+.task-date {
+  font-size:12px;
+  color:var(--muted);
+  margin-top:5px;
+}
+
+.delete {
+  background:#fee2e2;
+  color:#b91c1c;
+}
+
+.empty {
+  color:var(--muted);
+  padding:20px 0;
+}
+
+.spacer {
+  height:20px;
+}
+
+/* 구글 스프레드시트 */
+.sheet-buttons {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.sheet-buttons button {
+  background:#e9eef6;
+  color:#334155;
+}
+
+.sheet-buttons button.active {
+  background:var(--blue);
+  color:white;
+}
+
+.table-area {
+  overflow-x:auto;
+  margin-top:15px;
+}
+
+table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+}
+
 th,td {
   padding:12px;
   border:1px solid var(--line);
   text-align:left;
   white-space:nowrap;
 }
-th { background:#eaf1fa; }
-.status { color:var(--muted); font-size:13px; }
-footer { text-align:center; padding:25px; color:var(--muted); }
+
+th {
+  background:#eaf1fa;
+}
+
+.status {
+  color:var(--muted);
+  font-size:13px;
+}
+
+footer {
+  text-align:center;
+  padding:25px;
+  color:var(--muted);
+}
+
+/* 작은 화면에서는 고정 영역 높이 축소 */
 @media(max-width:650px) {
-  .stats { grid-template-columns:repeat(3,minmax(0,1fr)); gap:7px; }
-  .card { padding:15px; }
-  .stat-number { font-size:24px; }
-  .stat-label { font-size:11px; }
-  .todo-form { grid-template-columns:1fr; }
-  header h1 { font-size:25px; }
-}
-  
-/* 상단 제목과 통계 카드 고정 */
-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
+  header {
+    padding:13px 16px 26px;
+  }
 
-/* 통계 카드 3개를 헤더 아래에 고정 */
-.stats {
-  position: sticky;
-  top: 175px;
-  z-index: 1001;
-}
+  .brand {
+    font-size:10px;
+  }
 
-/* 고정 영역 아래의 본문 여백 */
-main {
-  margin-top: -20px;
-}
+  header h1 {
+    font-size:20px;
+    margin:9px 0 5px;
+  }
 
-/* 모바일 화면 */
-@media (max-width: 650px) {
+  header p {
+    font-size:12px;
+  }
+
+  .stats-wrap {
+    margin-top:-12px;
+    padding:0 10px 8px;
+  }
+
   .stats {
-    top: 160px;
+    gap:7px;
+  }
+
+  .stats .card {
+    padding:10px;
+    border-radius:10px;
+  }
+
+  .stat-label {
+    font-size:10px;
+  }
+
+  .stat-number {
+    font-size:21px;
+    margin-top:4px;
+  }
+
+  .todo-form {
+    grid-template-columns:1fr;
+  }
+
+  main {
+    margin-top:14px;
   }
 }
-
 </style>
 </head>
+
 <body>
 
-<header>
-  <div class="wrap">
-    <div class="brand">MY LIFE DASHBOARD</div>
-    <h1>나의 생활 관리</h1>
-    <p id="todayText">오늘의 일정을 확인하세요.</p>
+<!-- 스크롤해도 고정되는 영역 시작 -->
+<div class="sticky-top">
+
+  <header>
+    <div class="wrap">
+      <div class="brand">MY LIFE DASHBOARD</div>
+      <h1>나의 생활 관리</h1>
+      <p id="todayText">오늘의 일정을 확인하세요.</p>
+    </div>
+  </header>
+
+  <div class="stats-wrap">
+    <div class="stats">
+
+      <div class="card">
+        <div class="stat-label">오늘 할 일</div>
+        <div class="stat-number" id="todayCount">0</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-label">기한 초과</div>
+        <div class="stat-number" id="overdueCount">0</div>
+      </div>
+
+      <div class="card">
+        <div class="stat-label">완료</div>
+        <div class="stat-number" id="doneCount">0</div>
+      </div>
+
+    </div>
   </div>
-</header>
+
+</div>
+<!-- 고정 영역 끝 -->
 
 <main>
-  <div class="stats">
-    <div class="card">
-      <div class="stat-label">오늘 할 일</div>
-      <div class="stat-number" id="todayCount">0</div>
-    </div>
-    <div class="card">
-      <div class="stat-label">기한 초과</div>
-      <div class="stat-number" id="overdueCount">0</div>
-    </div>
-    <div class="card">
-      <div class="stat-label">완료</div>
-      <div class="stat-number" id="doneCount">0</div>
-    </div>
-  </div>
 
   <section class="card">
     <h2 class="section-title">오늘의 To-Do List</h2>
 
     <form class="todo-form" id="todoForm">
-      <input id="taskInput" type="text"
+      <input
+        id="taskInput"
+        type="text"
         placeholder="해야 할 일을 입력하세요"
-        maxlength="200" required>
+        maxlength="200"
+        required
+      >
+
       <input id="dateInput" type="date" required>
-      <button class="primary" type="submit">+ 할 일 추가</button>
+
+      <button class="primary" type="submit">
+        + 할 일 추가
+      </button>
     </form>
 
     <div class="tabs">
@@ -206,6 +377,7 @@ main {
     </div>
 
     <div id="todoList"></div>
+
     <p class="status">
       할 일은 이 브라우저에 저장됩니다.
       다른 기기와 자동 동기화되지 않습니다.
@@ -221,15 +393,21 @@ main {
       <button id="carBtn" class="active" onclick="showSheet('car')">
         자동차 관리
       </button>
+
       <button id="homeBtn" onclick="showSheet('home')">
         가전 관리
       </button>
     </div>
 
     <h3 id="sheetTitle">자동차 관리</h3>
-    <p class="status" id="sheetStatus">데이터를 불러오는 중...</p>
+
+    <p class="status" id="sheetStatus">
+      데이터를 불러오는 중...
+    </p>
+
     <div class="table-area" id="tableArea"></div>
   </section>
+
 </main>
 
 <footer>© 2026 MY LIFE DASHBOARD</footer>
@@ -250,8 +428,12 @@ function todayISO() {
     day:"2-digit"
   }).formatToParts(new Date());
 
-  const get = type => parts.find(p => p.type === type).value;
-  return get("year") + "-" + get("month") + "-" + get("day");
+  const get = type =>
+    parts.find(p => p.type === type).value;
+
+  return get("year") + "-" +
+         get("month") + "-" +
+         get("day");
 }
 
 function koreanDate() {
@@ -266,7 +448,9 @@ function koreanDate() {
 
 function loadTasks() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    const saved = JSON.parse(
+      localStorage.getItem(STORAGE_KEY)
+    );
     return Array.isArray(saved) ? saved : [];
   } catch {
     return [];
@@ -278,10 +462,13 @@ let currentFilter = "today";
 
 function saveTasks() {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(tasks)
+    );
     return true;
   } catch {
-    alert("브라우저 저장에 실패했습니다. 저장 공간이나 설정을 확인하세요.");
+    alert("브라우저 저장에 실패했습니다.");
     return false;
   }
 }
@@ -293,71 +480,109 @@ function updateToday() {
 
 document.getElementById("dateInput").value = todayISO();
 
-document.getElementById("todoForm").addEventListener("submit", e => {
-  e.preventDefault();
+document.getElementById("todoForm")
+  .addEventListener("submit", e => {
+    e.preventDefault();
 
-  const input = document.getElementById("taskInput");
-  const dateInput = document.getElementById("dateInput");
-  const title = input.value.trim();
-  const due = dateInput.value;
+    const input = document.getElementById("taskInput");
+    const dateInput = document.getElementById("dateInput");
 
-  if (!title || !due) return;
+    const title = input.value.trim();
+    const due = dateInput.value;
 
-  tasks.unshift({
-    id: crypto.randomUUID(),
-    title,
-    due,
-    done:false
+    if (!title || !due) return;
+
+    const task = {
+      id:crypto.randomUUID(),
+      title,
+      due,
+      done:false
+    };
+
+    tasks.unshift(task);
+
+    if (!saveTasks()) {
+      tasks.shift();
+      return;
+    }
+
+    input.value = "";
+    dateInput.value = todayISO();
+    currentFilter = "today";
+    renderTasks();
   });
-
-  if (!saveTasks()) {
-    tasks.shift();
-    return;
-  }
-
-  input.value = "";
-  dateInput.value = todayISO();
-  currentFilter = "today";
-  renderTasks();
-});
 
 function toggleTask(id) {
   const task = tasks.find(t => t.id === id);
   if (!task) return;
+
   task.done = !task.done;
-  if (!saveTasks()) task.done = !task.done;
+
+  if (!saveTasks()) {
+    task.done = !task.done;
+  }
+
   renderTasks();
 }
 
 function deleteTask(id) {
-  if (!confirm("이 할 일을 삭제하시겠습니까?")) return;
+  if (!confirm("이 할 일을 삭제하시겠습니까?")) {
+    return;
+  }
+
   const previous = tasks;
   tasks = tasks.filter(t => t.id !== id);
-  if (!saveTasks()) tasks = previous;
+
+  if (!saveTasks()) {
+    tasks = previous;
+  }
+
   renderTasks();
 }
 
 function renderTasks() {
   const today = todayISO();
 
-  const todayTasks = tasks.filter(t => !t.done && t.due === today);
-  const overdue = tasks.filter(t => !t.done && t.due < today);
+  const todayTasks = tasks.filter(
+    t => !t.done && t.due === today
+  );
+
+  const overdue = tasks.filter(
+    t => !t.done && t.due < today
+  );
+
   const completed = tasks.filter(t => t.done);
 
-  document.getElementById("todayCount").textContent = todayTasks.length;
-  document.getElementById("overdueCount").textContent = overdue.length;
-  document.getElementById("doneCount").textContent = completed.length;
+  document.getElementById("todayCount").textContent =
+    todayTasks.length;
 
-  document.querySelectorAll("[data-filter]").forEach(btn => {
-    btn.classList.toggle(
-      "active", btn.dataset.filter === currentFilter
-    );
-  });
+  document.getElementById("overdueCount").textContent =
+    overdue.length;
+
+  document.getElementById("doneCount").textContent =
+    completed.length;
+
+  document.querySelectorAll("[data-filter]")
+    .forEach(btn => {
+      btn.classList.toggle(
+        "active",
+        btn.dataset.filter === currentFilter
+      );
+    });
 
   let visible = tasks.filter(t => {
-    if (currentFilter === "today") return t.due === today;
-    if (currentFilter === "overdue") return !t.done && t.due < today;
-    if (currentFilter === "upcoming") return !t.done && t.due > today;
+    if (currentFilter === "today") {
+      return t.due === today;
+    }
+
+    if (currentFilter === "overdue") {
+      return !t.done && t.due < today;
+    }
+
+    if (currentFilter === "upcoming") {
+      return !t.done && t.due > today;
+    }
+
     return true;
   });
 
@@ -381,44 +606,59 @@ function renderTasks() {
     const check = document.createElement("input");
     check.type = "checkbox";
     check.checked = task.done;
-    check.setAttribute("aria-label", task.title + " 완료");
-    check.addEventListener("change", () => toggleTask(task.id));
+    check.setAttribute(
+      "aria-label",
+      task.title + " 완료"
+    );
+    check.addEventListener(
+      "change",
+      () => toggleTask(task.id)
+    );
 
     const content = document.createElement("div");
     content.className = "task-content";
 
     const name = document.createElement("div");
-    name.className = "task-name" + (task.done ? " done" : "");
+    name.className =
+      "task-name" + (task.done ? " done" : "");
     name.textContent = task.title;
 
     const date = document.createElement("div");
     date.className = "task-date";
-    date.textContent = task.due +
-      (task.done ? " · 완료" : task.due < today ? " · 기한 초과" : "");
+    date.textContent =
+      task.due +
+      (task.done
+        ? " · 완료"
+        : task.due < today
+          ? " · 기한 초과"
+          : "");
 
-    content.append(name, date);
+    content.append(name,date);
 
     const remove = document.createElement("button");
     remove.className = "delete";
     remove.textContent = "삭제";
-    remove.addEventListener("click", () => deleteTask(task.id));
+    remove.addEventListener(
+      "click",
+      () => deleteTask(task.id)
+    );
 
-    row.append(check, content, remove);
+    row.append(check,content,remove);
     list.appendChild(row);
   });
 }
 
-document.querySelectorAll("[data-filter]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    currentFilter = btn.dataset.filter;
-    renderTasks();
+document.querySelectorAll("[data-filter]")
+  .forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentFilter = btn.dataset.filter;
+      renderTasks();
+    });
   });
-});
 
 updateToday();
 renderTasks();
 
-/* 날짜가 바뀌었을 때 다시 화면을 갱신 */
 document.addEventListener("visibilitychange", () => {
   if (!document.hidden) {
     updateToday();
@@ -434,8 +674,14 @@ const spreadsheetId =
   "1851_FKFXugeFmZgGhnfvsj3kkqXHBPvv6UHT8rVczQI";
 
 const sheets = {
-  car: { title:"자동차 관리", gid:"1993711592" },
-  home: { title:"가전 관리", gid:"81047042" }
+  car: {
+    title:"자동차 관리",
+    gid:"1993711592"
+  },
+  home: {
+    title:"가전 관리",
+    gid:"81047042"
+  }
 };
 
 let requestNumber = 0;
@@ -444,13 +690,17 @@ function showSheet(type) {
   const sheet = sheets[type];
   const currentRequest = ++requestNumber;
 
-  document.getElementById("sheetTitle").textContent = sheet.title;
+  document.getElementById("sheetTitle").textContent =
+    sheet.title;
 
   document.getElementById("carBtn").classList.toggle(
-    "active", type === "car"
+    "active",
+    type === "car"
   );
+
   document.getElementById("homeBtn").classList.toggle(
-    "active", type === "home"
+    "active",
+    type === "home"
   );
 
   const area = document.getElementById("tableArea");
@@ -469,7 +719,9 @@ function showSheet(type) {
 
   fetch(url)
     .then(response => {
-      if (!response.ok) throw new Error("HTTP " + response.status);
+      if (!response.ok) {
+        throw new Error("HTTP " + response.status);
+      }
       return response.text();
     })
     .then(text => {
@@ -477,11 +729,15 @@ function showSheet(type) {
 
       const start = text.indexOf("{");
       const end = text.lastIndexOf("}");
+
       if (start === -1 || end === -1) {
         throw new Error("응답 형식 오류");
       }
 
-      const data = JSON.parse(text.substring(start,end + 1));
+      const data = JSON.parse(
+        text.substring(start,end + 1)
+      );
+
       if (data.status === "error") {
         throw new Error("시트 조회 오류");
       }
@@ -491,9 +747,11 @@ function showSheet(type) {
     })
     .catch(error => {
       if (currentRequest !== requestNumber) return;
+
       console.error(error);
       status.textContent =
-        "데이터를 불러오지 못했습니다. 공유 설정과 연결 상태를 확인하세요.";
+        "데이터를 불러오지 못했습니다. " +
+        "공유 설정과 연결 상태를 확인하세요.";
     });
 }
 
@@ -506,7 +764,12 @@ function renderSheetTable(data) {
 
   data.cols.forEach((col,index) => {
     const th = document.createElement("th");
-    th.textContent = col.label || col.id || "항목 " + (index+1);
+
+    th.textContent =
+      col.label ||
+      col.id ||
+      "항목 " + (index + 1);
+
     headerRow.appendChild(th);
   });
 
@@ -519,7 +782,11 @@ function renderSheetTable(data) {
     data.cols.forEach((col,index) => {
       const td = document.createElement("td");
       const cell = row.c ? row.c[index] : null;
-      td.textContent = cell ? String(cell.f ?? cell.v ?? "") : "";
+
+      td.textContent = cell
+        ? String(cell.f ?? cell.v ?? "")
+        : "";
+
       tr.appendChild(td);
     });
 

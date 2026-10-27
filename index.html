@@ -132,6 +132,33 @@ footer { text-align:center; padding:25px; color:var(--muted); }
   .todo-form { grid-template-columns:1fr; }
   header h1 { font-size:25px; }
 }
+  
+/* 상단 제목과 통계 카드 고정 */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* 통계 카드 3개를 헤더 아래에 고정 */
+.stats {
+  position: sticky;
+  top: 175px;
+  z-index: 1001;
+}
+
+/* 고정 영역 아래의 본문 여백 */
+main {
+  margin-top: -20px;
+}
+
+/* 모바일 화면 */
+@media (max-width: 650px) {
+  .stats {
+    top: 160px;
+  }
+}
+
 </style>
 </head>
 <body>
